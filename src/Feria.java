@@ -1,4 +1,5 @@
 import java.util.ArrayList; // Paquete con la clase Array para generar una colección de datos.
+import java.util.Scanner;
 
 class Empresa {
 
@@ -43,11 +44,31 @@ class Comentario {
 
 public class Feria {
     public static void main(String[] args) {
-
-        boolean state_menu = true;
+        Scanner scanner = new Scanner(System.in);
+        boolean state_menu = true; // Variable que permite la repetición del menú.
 
         System.out.println("Proyecto de Ferial Empresarial: ");
 
+        do {
+            System.out.println("Menu de la Feria Empresarial:\n" +
+                    "[1] Registro de Visitante\n" +
+                    "[2] Creación de Empresa\n" +
+                    "[3] Ver Empresas\n" +
+                    "[4] Ver Visitantes\n" +
+                    "[5] Ver Estantes\n" +
+                    "[6] Finalizar programa.\n");
+
+            int option = scanner.nextInt();
+
+            if (option == 6){
+
+                state_menu = false;
+
+            }
+
+        }while (state_menu);
+
+        System.out.println("Finalización del programa");
 
 
     }
