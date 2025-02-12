@@ -6,8 +6,8 @@ class Empresa {
     private String nombre;
     private String sector;
     private String correo;
-    private int id;
     private Stand stand;
+    private int id;
 
     public  Empresa (String nombre, String sector, String correo, int id){
         this.nombre = nombre;
@@ -15,6 +15,25 @@ class Empresa {
         this.correo = correo;
         this.id = id;
     }
+
+    // Getters
+    public String getNombre()   {return nombre;}
+
+    public String getSector()   {return sector;}
+
+    public String getCorreo()   {return correo; }
+
+    public int getId()  {return id; }
+
+    public Stand getStand()    {return stand; }
+
+    // Setters
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setSector(String sector) { this.sector = sector; }
+    public void setCorreo(String correo) { this.correo = correo; }
+    public void setStand(Stand stand) { this.stand = stand; }
+
+
 }
 
 class Stand {
@@ -30,17 +49,73 @@ class Stand {
         this.size = size;
     }
 
+    // Getters
+    public int getId()  { return id; }
+    public String getUbicacion()    { return ubicacion; }
+    public String getSize()     { return size; }
+    public boolean isDisponible()   { return disponibilidad; }
+
+    // Setters
+    public void setUbicacion(String ubicacion)  { this.ubicacion = ubicacion; }
+    public void setSize(String size)    { this.size = size; }
+    public void setDisponibilidad(boolean disponibilidad)   { this.disponibilidad = disponibilidad; }
+
 }
 
 class Comentario {
     private String texto;
     private int calificacion;
+    boolean info_visitante = false;
 
     public Comentario (String texto, int calificacion) {
         this.texto = texto;
         this.calificacion = calificacion;
     }
+
+    // Getters
+    public String getTexto()    { return texto; }
+    public int getCalificacion()    { return calificacion; }
+
+    // Setters
+    public void setTexto(String texto)  { this.texto = texto; }
+    public void setCalificacion(int calificacion)   { this.calificacion = calificacion; }
 }
+
+class Visitante {
+    private String nombre;
+    private String identificacion;
+    private String correo;
+
+    public Visitante(String nombre, String identificacion, String correo) {
+        this.nombre = nombre;
+        this.identificacion = identificacion;
+        this.correo = correo;
+    }
+
+    // Getters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    // Setters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+}
+
+
 
 public class Feria {
     public static void main(String[] args) {
