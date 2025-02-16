@@ -1,5 +1,6 @@
 import java.util.ArrayList; // Paquete con la clase Array para generar una colección de datos.
 import java.util.Scanner;
+import javax.swing.*;
 
 class Empresa {
 
@@ -121,24 +122,37 @@ public class Feria {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean state_menu = true; // Variable que permite la repetición del menú.
+        ArrayList<Empresa> listEmpresa = new ArrayList<>();
+        int id_empresas = 0;
 
         System.out.println("Proyecto de Ferial Empresarial: ");
 
         do {
             System.out.println("Menu de la Feria Empresarial:\n" +
-                    "[1] Registro de Visitante\n" +
-                    "[2] Creación de Empresa\n" +
+                    "[1] Registro de Empresa\n" +
+                    "[2] Creación de Visitante\n" +
                     "[3] Ver Empresas\n" +
                     "[4] Ver Visitantes\n" +
                     "[5] Ver Estantes\n" +
                     "[6] Finalizar programa.\n");
 
             int option = scanner.nextInt();
+            scanner.nextLine();
 
-            if (option == 6){
+            switch (option) {
+                case 1:
+                    String nombreEmpresa = JOptionPane.showInputDialog(null, "Ingrese el nombre de la empresa");
+                    String sectorEmpresa = JOptionPane.showInputDialog(null, "Ingrese el sector al cual pertenece su empresa");
+                    String correoEmpresa = JOptionPane.showInputDialog(null, "Ingrese el correo de su empresa");
 
-                state_menu = false;
+                    Empresa empresa = new Empresa(nombreEmpresa, sectorEmpresa, correoEmpresa, id_empresas);
+                    id_empresas += 1;
 
+                    JOptionPane.showMessageDialog(null, "Empresa: " + empresa.getNombre() + " creada con éxito");
+                    break;
+                case 6:
+                    state_menu = false;
+                    break;
             }
 
         }while (state_menu);
