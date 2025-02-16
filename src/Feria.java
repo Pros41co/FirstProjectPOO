@@ -116,16 +116,68 @@ class Visitante {
     }
 }
 
+class Consultor {
+    private ArrayList<Empresa> listEmpresa = new ArrayList<>();
+    private ArrayList<Visitante> listVisitante = new ArrayList<>();
+    private ArrayList<Stand> listStands = new ArrayList<>();
 
+    public void add_object(Empresa object){
+
+        listEmpresa.add(object);
+        System.out.println("Empresa " + object.getNombre() + " agregada");
+        }
+
+    public  void add_object(Visitante object){
+
+        listVisitante.add(object);
+        System.out.println("Visitante " + object.getNombre() + " agregado");
+    }
+
+    public void add_object(Stand object){
+
+        listStands.add(object);
+        System.out.println("Stand " + object.getId() + " agregado");
+
+    }
+
+    public void get_list(int identifier){
+        switch (identifier){
+            case 0:
+                for (int i = 0; i < listEmpresa.size(); i++){
+
+                    System.out.println("[" + i + "]" + " " + listEmpresa.get(i).getNombre());
+
+                }
+                break;
+
+            case 1:
+                for (int i = 0; i < listVisitante.size(); i++){
+
+                    System.out.println("[" + i + "]" + " " + listVisitante.get(i).getNombre());
+
+                }
+                break;
+
+            case 2:
+                for (int i = 0; i < listStands.size(); i++){
+
+                    System.out.println("[" + i + "]" + " " + listStands.get(i).getId());
+
+                }
+                break;
+
+            default:
+                System.out.println("Identificador no válido.");
+        }
+    }
+}
 
 public class Feria {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean state_menu = true; // Variable que permite la repetición del menú.
+        Consultor consultor = new Consultor();
 
-        // Almacen de empresas y visistantes
-        ArrayList<Empresa> listEmpresa = new ArrayList<>();
-        ArrayList<Visitante> listVisitante = new ArrayList<>();
 
         int id_empresas = 0;
 
@@ -152,7 +204,7 @@ public class Feria {
                     Empresa empresa = new Empresa(nombreEmpresa, sectorEmpresa, correoEmpresa, id_empresas);
                     id_empresas += 1;
 
-                    listEmpresa.add(empresa);
+                    consultor.add_object(empresa);
 
                     JOptionPane.showMessageDialog(null, "Empresa: " + empresa.getNombre() + " creada con éxito");
                     break;
@@ -163,13 +215,17 @@ public class Feria {
                     String correoVisitante = JOptionPane.showInputDialog(null, "Ingrese su correo");
 
                     Visitante visitante = new Visitante(nombreVisitante, idVisitante, correoVisitante);
-                    listVisitante.add(visitante);
+                    consultor.add_object(visitante);
 
                 case 3:
-                    for (int i = 0; i < listEmpresa.size(); i++){
-                        System.out.println(i + " " + listEmpresa.get(i).getNombre());
-                    }
+                    consultor.get_list(0);
                     break;
+
+                case 4:
+                    consultor.get_list(1);
+                    break;
+                case 5:
+                    consultor.get_list(2);
 
                 case 6:
                     state_menu = false;
