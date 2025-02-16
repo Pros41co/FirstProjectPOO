@@ -122,7 +122,11 @@ public class Feria {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean state_menu = true; // Variable que permite la repetición del menú.
+
+        // Almacen de empresas y visistantes
         ArrayList<Empresa> listEmpresa = new ArrayList<>();
+        ArrayList<Visitante> listVisitante = new ArrayList<>();
+
         int id_empresas = 0;
 
         System.out.println("Proyecto de Ferial Empresarial: ");
@@ -148,8 +152,25 @@ public class Feria {
                     Empresa empresa = new Empresa(nombreEmpresa, sectorEmpresa, correoEmpresa, id_empresas);
                     id_empresas += 1;
 
+                    listEmpresa.add(empresa);
+
                     JOptionPane.showMessageDialog(null, "Empresa: " + empresa.getNombre() + " creada con éxito");
                     break;
+
+                case 2:
+                    String nombreVisitante = JOptionPane.showInputDialog(null, "Ingrese su nombre");
+                    String idVisitante = JOptionPane.showInputDialog(null, "Ingrese su número de identificación");
+                    String correoVisitante = JOptionPane.showInputDialog(null, "Ingrese su correo");
+
+                    Visitante visitante = new Visitante(nombreVisitante, idVisitante, correoVisitante);
+                    listVisitante.add(visitante);
+
+                case 3:
+                    for (int i = 0; i < listEmpresa.size(); i++){
+                        System.out.println(i + " " + listEmpresa.get(i).getNombre());
+                    }
+                    break;
+
                 case 6:
                     state_menu = false;
                     break;
