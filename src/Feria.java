@@ -11,11 +11,12 @@ class Empresa {
     private Stand stand;
     private int id;
 
-    public  Empresa (String nombre, String sector, String correo, int id){
+    public  Empresa (String nombre, String sector, String correo, int id, Stand stand){
         this.nombre = nombre;
         this.sector = sector;
         this.correo = correo;
         this.id = id;
+        this.stand = stand;
     }
 
     // Getters
@@ -44,11 +45,13 @@ class Stand {
     private String size;
     private boolean disponibilidad = true;
     private List<Comentario> comentarios = new ArrayList<>(); // Colección para almacenar datos de tipo string -> Comentarios.
+    private String nombreEmpresa;
 
     public Stand (int id, String ubicacion, String size){
 
         this.ubicacion = ubicacion;
         this.size = size;
+        this.id = id;
     }
 
     // Getters
@@ -122,6 +125,21 @@ class Consultor {
     private List<Visitante> listVisitante = new ArrayList<>();
     private List<Stand> listStands = new ArrayList<>();
 
+    public Consultor(){
+        int idStand = 0;
+        String[] ubicationFeria = {"Ala Oeste", "Ala Norte", "Ale Este"};
+        String[] sizeStand = {"pequeño", "mediano", "grande"};
+
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 2; k++){
+                    listStands.add(new Stand(idStand, ubicationFeria[i], sizeStand[j]));
+                    idStand++;
+                }
+            }
+        }
+    }
+
     public void add_object(Empresa object){
 
         listEmpresa.add(object);
@@ -157,7 +175,10 @@ class Consultor {
 
             case 2:
                 for (Stand stand: listStands){
-                    System.out.println("Stand: " + stand.getId() + "con ubicación: " + stand.getUbicacion());
+                    if (stand.isDisponible()) {
+                        System.out.println("Stand: [" + stand.getId() + "] con ubicación " + stand.getUbicacion() +
+                                " y tamaño " + stand.getSize());
+                    };
                 }
                 break;
 
@@ -165,12 +186,16 @@ class Consultor {
                 System.out.println("Identificador no válido.");
         }
     }
+
+    public Stand getStand(int idStand){
+        return listStands.get(idStand);
+    }
 }
 
 class Menu {
     private  Scanner scanner;
     private Consultor consultor;
-    int id_empresas = 0;
+    private int id_empresas = 0;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
@@ -194,16 +219,34 @@ class Menu {
 
             switch (option) {
                 case 1:
-                    String nombreEmpresa = JOptionPane.showInputDialog(null, "Ingrese el nombre de la empresa");
-                    String sectorEmpresa = JOptionPane.showInputDialog(null, "Ingrese el sector al cual pertenece su empresa");
-                    String correoEmpresa = JOptionPane.showInputDialog(null, "Ingrese el correo de su empresa");
+                    System.out.println("Introduce el nombre de la empresa: \n");
+                    String nombreEmpresa = scanner.next();
+                    System.out.println("Introduce el nombre del sector al que pertenece la empresa: \n");
+                    String sectorEmpresa = scanner.next();
+                    System.out.println("Introduce el correo de la empresa: \n");
+                    String correoEmpresa = scanner.next();
 
-                    Empresa empresa = new Empresa(nombreEmpresa, sectorEmpresa, correoEmpresa, id_empresas);
+                    System.out.println("Elige un stand para tu empresa:");
+
+                    Empresa empresa;
+
+                    while (true) {
+                        consultor.get_list(2);
+                        int option_stand = scanner.nextInt();
+                        Stand standChoose = consultor.getStand(option_stand);
+
+                        if (standChoose.isDisponible()) {
+                            empresa = new Empresa(nombreEmpresa, sectorEmpresa, correoEmpresa, id_empresas, standChoose);
+                            break;
+                        } else {
+                            System.out.println("Elige un stand disponible \n");
+                        }
+                    }
+
                     id_empresas += 1;
 
                     consultor.add_object(empresa);
-
-                    JOptionPane.showMessageDialog(null, "Empresa: " + empresa.getNombre() + " creada con éxito");
+                    System.out.println("Empresa creada con éxito \n");
                     break;
 
                 case 2:
