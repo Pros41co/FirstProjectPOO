@@ -1,6 +1,7 @@
 import java.util.ArrayList; // Paquete con la clase Array para generar una colección de datos.
 import java.util.Scanner;
 import javax.swing.*;
+import java.util.List;
 
 class Empresa {
 
@@ -42,7 +43,7 @@ class Stand {
     private String ubicacion;
     private String size;
     private boolean disponibilidad = true;
-    private ArrayList<Comentario> comentarios = new ArrayList<>(); // Colección para almacenar datos de tipo string -> Comentarios.
+    private List<Comentario> comentarios = new ArrayList<>(); // Colección para almacenar datos de tipo string -> Comentarios.
 
     public Stand (int id, String ubicacion, String size){
 
@@ -117,9 +118,9 @@ class Visitante {
 }
 
 class Consultor {
-    private ArrayList<Empresa> listEmpresa = new ArrayList<>();
-    private ArrayList<Visitante> listVisitante = new ArrayList<>();
-    private ArrayList<Stand> listStands = new ArrayList<>();
+    private List<Empresa> listEmpresa = new ArrayList<>();
+    private List<Visitante> listVisitante = new ArrayList<>();
+    private List<Stand> listStands = new ArrayList<>();
 
     public void add_object(Empresa object){
 
@@ -143,26 +144,20 @@ class Consultor {
     public void get_list(int identifier){
         switch (identifier){
             case 0:
-                for (int i = 0; i < listEmpresa.size(); i++){
-
-                    System.out.println("[" + i + "]" + " " + listEmpresa.get(i).getNombre());
-
+                for (Empresa empresa: listEmpresa){
+                    System.out.println("Empresa: " + empresa.getNombre() + "- Sector: " + empresa.getSector());
                 }
                 break;
 
             case 1:
-                for (int i = 0; i < listVisitante.size(); i++){
-
-                    System.out.println("[" + i + "]" + " " + listVisitante.get(i).getNombre());
-
+                for (Visitante visitante: listVisitante){
+                    System.out.println("Visitante: " + visitante.getNombre());
                 }
                 break;
 
             case 2:
-                for (int i = 0; i < listStands.size(); i++){
-
-                    System.out.println("[" + i + "]" + " " + listStands.get(i).getId());
-
+                for (Stand stand: listStands){
+                    System.out.println("Stand: " + stand.getId() + "con ubicación: " + stand.getUbicacion());
                 }
                 break;
 
@@ -172,14 +167,18 @@ class Consultor {
     }
 }
 
-public class Feria {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        boolean state_menu = true; // Variable que permite la repetición del menú.
-        Consultor consultor = new Consultor();
+class Menu {
+    private  Scanner scanner;
+    private Consultor consultor;
+    int id_empresas = 0;
 
+    public Menu() {
+        this.scanner = new Scanner(System.in);
+        this.consultor = new Consultor();
+    }
 
-        int id_empresas = 0;
+    public void mostrarMenu() {
+        int option;
 
         System.out.println("Proyecto de Ferial Empresarial: ");
 
@@ -191,9 +190,7 @@ public class Feria {
                     "[4] Ver Visitantes\n" +
                     "[5] Ver Estantes\n" +
                     "[6] Finalizar programa.\n");
-
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            option = scanner.nextInt();
 
             switch (option) {
                 case 1:
@@ -216,7 +213,7 @@ public class Feria {
 
                     Visitante visitante = new Visitante(nombreVisitante, idVisitante, correoVisitante);
                     consultor.add_object(visitante);
-
+                    break;
                 case 3:
                     consultor.get_list(0);
                     break;
@@ -226,17 +223,20 @@ public class Feria {
                     break;
                 case 5:
                     consultor.get_list(2);
-
+                    break;
                 case 6:
-                    state_menu = false;
                     break;
             }
+        }while (option != 6);
+    }
+}
 
-        }while (state_menu);
+public class Feria {
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.mostrarMenu();
 
         System.out.println("Finalización del programa");
-
-
     }
 
 }
