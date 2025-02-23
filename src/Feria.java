@@ -358,12 +358,13 @@ class AdministratorMenu {
             }
             System.out.println(ColoresConsola.CYAN + "[1]" + ColoresConsola.RESET + "Ver Todas las Empresas");
             System.out.println(ColoresConsola.CYAN + "[2]" + ColoresConsola.RESET + "Seleccionar Empresa para Modificar");
-            System.out.println(ColoresConsola.CYAN + "[3]" + ColoresConsola.RESET + "Eliminar una Empresa");
-            System.out.println(ColoresConsola.CYAN + "[4]" + ColoresConsola.RESET + "Ver Correo de la Empresa");
-            System.out.println(ColoresConsola.CYAN + "[5]" + ColoresConsola.RESET + "Deseleccionar Empresa");
-            System.out.println(ColoresConsola.CYAN + "[6]" + ColoresConsola.RESET + "Consultar comentarios empresa");
+            if (seleccionempresa!= null){
+                System.out.println(ColoresConsola.CYAN + "[3]" + ColoresConsola.RESET + "Eliminar una Empresa");
+                System.out.println(ColoresConsola.CYAN + "[4]" + ColoresConsola.RESET + "Ver Correo de la Empresa");
+                System.out.println(ColoresConsola.CYAN + "[5]" + ColoresConsola.RESET + "Deseleccionar Empresa");
+                System.out.println(ColoresConsola.CYAN + "[6]" + ColoresConsola.RESET + "Consultar comentarios empresa");
+            }
             System.out.println(ColoresConsola.CYAN + "[7]" + ColoresConsola.RESET + "Salir del menú de Empresas");
-
 
             try{
                 option = scanner.nextInt();
