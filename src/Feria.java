@@ -334,13 +334,10 @@ class AdministratorMenu {
 
     protected Visitante crearVisitante() {
         System.out.println("Ingresa tu nombre: ");
-        scanner.nextLine();
         String nombreVisitante = scanner.next();
         System.out.println("Ingresa tu número de identificación: ");
-        scanner.nextLine();
         String idVisitante = scanner.next();
         System.out.println("Ingresa tu correo electrónico");
-        scanner.nextLine();
         String correoVisitante = scanner.next();
         Visitante visitante = new Visitante(nombreVisitante, idVisitante, correoVisitante);
         consultor.addObject(visitante);
