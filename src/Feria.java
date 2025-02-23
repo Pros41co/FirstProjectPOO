@@ -367,7 +367,7 @@ class AdministratorMenu {
 
             try{
                 option = scanner.nextInt();
-            }catch (InputMismatchException e){
+            }catch (Exception e){
                 System.out.println("Introduce una opción válida. [Número del 1 al 7]");
                 option = 8;
             }
@@ -431,6 +431,7 @@ class AdministratorMenu {
                     break;
                 default:
                     System.out.println("Opción no válida. (Sólo número del 1 al 6");
+                    break;
             }
         }while (option!=7);
     }
@@ -457,7 +458,7 @@ class AdministratorMenu {
 
             try{
                 option = scanner.nextInt();
-            }catch (InputMismatchException e){
+            }catch (Exception e){
                 System.out.println("Ingresa un número solamente.");
                 option = 7;
             }
@@ -516,11 +517,10 @@ class AdministratorMenu {
                     break;
                 default:
                     System.out.println("Ingresa una opción válida. (Número del 1 al 5)");
+                    break;
             }
         }while (option!=7);
     }
-
-
 
     public void mostrarMenu() {
         int option;
@@ -536,7 +536,7 @@ class AdministratorMenu {
                     "[6] Salir del menú de Administrador.\n");
             try{
                 option = scanner.nextInt();
-            }catch (InputMismatchException e){
+            }catch (Exception e){
                 System.out.println("Ingresa sólo un número válido [1-6]");
                 option = 7;
             }
@@ -564,6 +564,7 @@ class AdministratorMenu {
                     break;
                 default:
                     System.out.println("Ingresa una opción válida. (Sólo número del 1 al 6)");
+                    break;
             }
         }while (option != 6);
     }
@@ -595,7 +596,7 @@ class UserMenu extends AdministratorMenu    {
                 }else{
                     break;
                 }
-            }catch (InputMismatchException e){
+            }catch (Exception e){
                 System.out.println("Coloca un número válido.");
             }
         }while (true);
@@ -634,12 +635,12 @@ class UserMenu extends AdministratorMenu    {
                 System.out.println("[4] Dejar comentario en el stand activo [" + standActive.getId() + "]");
                 System.out.println("[5] Ver comentarios del Stand activo");
             }
-            System.out.println("[5] Salir del menú de usuario");
+            System.out.println("[6] Salir del menú de usuario");
 
             try {
                 option = scanner.nextInt();
                 scanner.nextLine();
-            }catch (InputMismatchException e){
+            }catch (Exception e){
                 System.out.println("Ingresa sólo un número válido [1-5]");
                 option = 7;
             }
@@ -700,7 +701,12 @@ class UserMenu extends AdministratorMenu    {
 
                     break;
                 case 5:
-                    standActive.consultarComentarios();
+                    if (standActive != null){
+                        standActive.consultarComentarios();
+                    }else{
+                        System.out.println("No hay un stand seleccionado");
+                    }
+                    break;
                 case 6:
                     if (visitante !=null){
                         visitante = null;
@@ -747,7 +753,7 @@ public class Feria {
 
             try{
                 option = scanner.nextInt();
-            }catch (InputMismatchException e){
+            }catch (Exception e){
                 System.out.println("Elige una opción válida. (Número del 1 al 3)");
                 option = 4;
             }
@@ -760,6 +766,9 @@ public class Feria {
                     adminMenu.mostrarMenu();
                     break;
                 case 3:
+                    break;
+                default:
+                    System.out.println("Selecciona una opción válida");
                     break;
             }
         }while (option != 3);
