@@ -3,15 +3,6 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.InputMismatchException;
 
-class ColoresConsola {
-    public static final String RESET = "\u001B[0m";  // Resetear color
-    public static final String RED = "\u001B[31m";   // Rojo
-    public static final String GREEN = "\u001B[32m"; // Verde
-    public static final String YELLOW = "\u001B[33m";// Amarillo
-    public static final String BLUE = "\u001B[34m";  // Azul
-    public static final String PURPLE = "\u001B[35m";// Morado
-    public static final String CYAN = "\u001B[36m";  // Cian
-}
 
 
 class Empresa {
@@ -337,18 +328,17 @@ class AdministratorMenu {
         id_empresas += 1;
 
         consultor.addObject(empresa);
-        System.out.println(ColoresConsola.GREEN +  "Empresa creada con éxito \n" + ColoresConsola.RESET);
+        System.out.println(ColoresConsola.GREEN +  "Empresa con id [" + empresa.getId() + "]" + " creada con éxito \n" + ColoresConsola.RESET);
 
     }
 
     protected Visitante crearVisitante() {
         System.out.println("Ingresa tu nombre: ");
-        String nombreVisitante = scanner.nextLine();
+        String nombreVisitante = scanner.next();
         System.out.println("Ingresa tu número de identificación: ");
         String idVisitante = scanner.next();
         System.out.println("Ingresa tu correo electrónico");
         String correoVisitante = scanner.next();
-
         Visitante visitante = new Visitante(nombreVisitante, idVisitante, correoVisitante);
         consultor.addObject(visitante);
 
@@ -374,7 +364,14 @@ class AdministratorMenu {
             System.out.println(ColoresConsola.CYAN + "[6]" + ColoresConsola.RESET + "Consultar comentarios empresa");
             System.out.println(ColoresConsola.CYAN + "[7]" + ColoresConsola.RESET + "Salir del menú de Empresas");
 
-            option = scanner.nextInt();
+
+            try{
+                option = scanner.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Introduce una opción válida. [Número del 1 al 7]");
+                option = 8;
+            }
+
 
             switch (option){
                 case 1:
@@ -429,6 +426,9 @@ class AdministratorMenu {
                     else{
                         System.out.println("No hay una Empresa seleccionada");
                     }
+                    break;
+                case 7:
+                    break;
                 default:
                     System.out.println("Opción no válida. (Sólo número del 1 al 6");
             }
@@ -632,6 +632,7 @@ class UserMenu extends AdministratorMenu    {
             }
             if (standActive != null){
                 System.out.println("[4] Dejar comentario en el stand activo [" + standActive.getId() + "]");
+                System.out.println("[5] Ver comentarios del Stand activo");
             }
             System.out.println("[5] Salir del menú de usuario");
 
@@ -677,16 +678,30 @@ class UserMenu extends AdministratorMenu    {
                         consultor.showListStand(false);
                         int standchoose = scanner.nextInt();
                         standActive = consultor.getStand(standchoose);
+                        if (standActive.isDisponible()){
+                            standActive = null;
+                            System.out.println("Stand no disponible. Actualmente este Stand no cuenta con ninguna empresa");
+                        }else{
+                            System.out.println(ColoresConsola.GREEN + "Visitando el STAND [" + standActive.getId() + "]" + ColoresConsola.RESET);
+                        }
                         scanner.nextLine();
-                        System.out.println(ColoresConsola.GREEN + "Visitando el STAND [" + standActive.getId() + "]" + ColoresConsola.RESET);
+
                     }else{
                         System.out.println("Aún no hay Stands con empresas asignadas para visitar.");
                     }
                     break;
                 case 4:
-                    escribirComentario();
+                    if (standActive != null){
+                        escribirComentario();
+                    }
+                    else{
+                        System.out.println("No se está visitando un Stand"  );
+                    }
+
                     break;
                 case 5:
+                    standActive.consultarComentarios();
+                case 6:
                     if (visitante !=null){
                         visitante = null;
                     }
@@ -698,8 +713,19 @@ class UserMenu extends AdministratorMenu    {
                 default:
                     System.out.println("Opción no válida");
             }
-        }while (option !=5);
+        }while (option !=6);
     }
+}
+
+
+class ColoresConsola {
+    public static final String RESET = "\u001B[0m";  // Resetear color
+    public static final String RED = "\u001B[31m";   // Rojo
+    public static final String GREEN = "\u001B[32m"; // Verde
+    public static final String YELLOW = "\u001B[33m";// Amarillo
+    public static final String BLUE = "\u001B[34m";  // Azul
+    public static final String PURPLE = "\u001B[35m";// Morado
+    public static final String CYAN = "\u001B[36m";  // Cian
 }
 
 public class Feria {
@@ -718,7 +744,14 @@ public class Feria {
             System.out.println(ColoresConsola.CYAN + "[1]" + ColoresConsola.RESET + "Panel de Usuario");
             System.out.println(ColoresConsola.CYAN + "[2]" + ColoresConsola.RESET + "Panel de administrador");
             System.out.println(ColoresConsola.CYAN + "[3]" + ColoresConsola.RESET + "Salir del programa");
-            option = scanner.nextInt();
+
+            try{
+                option = scanner.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Elige una opción válida. (Número del 1 al 3)");
+                option = 4;
+            }
+
             switch (option){
                 case 1:
                     userMenu.mostrarMenuUser();
