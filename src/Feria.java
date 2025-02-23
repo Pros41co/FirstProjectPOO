@@ -686,14 +686,14 @@ class UserMenu extends AdministratorMenu    {
                         standActive = consultor.getStand(standchoose);
                         if (standActive.isDisponible()){
                             standActive = null;
-                            System.out.println("Stand no disponible. Actualmente este Stand no cuenta con ninguna empresa");
+                            System.out.println(ColoresConsola.BLUE +  "Stand no disponible. Actualmente este Stand no cuenta con ninguna empresa" + ColoresConsola.RESET);
                         }else{
                             System.out.println(ColoresConsola.GREEN + "Visitando el STAND [" + standActive.getId() + "]" + ColoresConsola.RESET);
                         }
                         scanner.nextLine();
 
                     }else{
-                        System.out.println("Aún no hay Stands con empresas asignadas para visitar.");
+                        System.out.println(ColoresConsola.BLUE +  "Aún no hay Stands con empresas asignadas para visitar." + ColoresConsola.RESET);
                     }
                     break;
                 case 4:
