@@ -30,7 +30,6 @@ class Empresa {
         this.stand = stand;
     }
 
-    // Getters
     public String getNombre()   {return nombre;}
 
     public String getSector()   {return sector;}
@@ -41,7 +40,6 @@ class Empresa {
 
     public Stand getStand()    {return stand; }
 
-    // Setters
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setSector(String sector) { this.sector = sector; }
     public void setCorreo(String correo) { this.correo = correo; }
@@ -115,7 +113,6 @@ class Stand {
 class Comentario {
     private String texto;
     private int calificacion;
-    boolean info_visitante = false;
 
     public Comentario (String texto, int calificacion) {
         this.texto = texto;
@@ -257,6 +254,18 @@ class Consultor {
         }
     }
 
+    public void eliminarVisitante(String identificacion){
+        listVisitante.remove(getVisitante(identificacion));
+    }
+
+    public void eliminarEmpresa(int id){
+        listEmpresa.remove(getEmpresa(id));
+    }
+
+    public void editarVisitante(Visitante visitante, String nombre){
+        visitante.setNombre(nombre);
+    }
+
     public Visitante getVisitante(String identificacion){
         for (Visitante visitante: listVisitante){
             if (visitante.getIdentificacion().equals(identificacion)){
@@ -282,17 +291,6 @@ class Consultor {
     public boolean getEmpresaEscrita(){return empresaescrita;}
     public boolean getVisitanteEscrito(){return visitanteescrito;}
 
-    public void eliminarVisitante(String identificacion){
-        listVisitante.remove(getVisitante(identificacion));
-    }
-
-    public void eliminarEmpresa(int id){
-        listEmpresa.remove(getEmpresa(id));
-    }
-
-    public void editarVisitante(Visitante visitante, String nombre){
-        visitante.setNombre(nombre);
-    }
 }
 
 class AdministratorMenu {
