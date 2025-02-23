@@ -461,6 +461,7 @@ class AdministratorMenu {
                 option = scanner.nextInt();
             }catch (Exception e){
                 System.out.println("Ingresa un número solamente.");
+                scanner.nextLine();
                 option = 7;
             }
 
@@ -539,6 +540,7 @@ class AdministratorMenu {
                 option = scanner.nextInt();
             }catch (Exception e){
                 System.out.println("Ingresa sólo un número válido [1-6]");
+                scanner.nextLine();
                 option = 7;
             }
 
@@ -599,6 +601,7 @@ class UserMenu extends AdministratorMenu    {
                 }
             }catch (Exception e){
                 System.out.println("Coloca un número válido.");
+                scanner.nextLine();
             }
         }while (true);
 
@@ -643,6 +646,7 @@ class UserMenu extends AdministratorMenu    {
                 scanner.nextLine();
             }catch (Exception e){
                 System.out.println("Ingresa sólo un número válido [1-5]");
+                scanner.nextLine();
                 option = 7;
             }
 
@@ -756,6 +760,7 @@ public class Feria {
                 option = scanner.nextInt();
             }catch (Exception e){
                 System.out.println("Elige una opción válida. (Número del 1 al 3)");
+                scanner.nextLine();
                 option = 4;
             }
 
