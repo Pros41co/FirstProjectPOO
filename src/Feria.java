@@ -1,6 +1,7 @@
 import java.util.ArrayList; // Paquete con la clase Array para generar una colección de datos.
 import java.util.Scanner;
 import java.util.List;
+import java.util.InputMismatchException;
 
 class ColoresConsola {
     public static final String RESET = "\u001B[0m";  // Resetear color
@@ -54,8 +55,10 @@ class Stand {
     private String ubicacion;
     private String size;
     private boolean disponibilidad = true;
+    private boolean conComentario = false;
     private List<Comentario> comentarios = new ArrayList<>(); // Colección para almacenar datos de tipo string -> Comentarios.
     private String nombreEmpresa = null;
+
 
     public Stand (int id, String ubicacion, String size){
 
@@ -66,6 +69,7 @@ class Stand {
 
     public void addComentario(Comentario comentario){
         comentarios.add(comentario);
+        conComentario = true;
     }
 
     public void consultarComentarios(){
@@ -76,6 +80,23 @@ class Stand {
             System.out.println("Calificación: " + comentario.getCalificacion());
         }
     }
+
+    public void consultarCalificacion(){
+        if (conComentario){
+            int calificacion = 0;
+            int cantidadCalifacion = 0;
+            for (Comentario comentario: comentarios){
+                calificacion += comentario.getCalificacion();
+                cantidadCalifacion ++;
+            }
+            System.out.println(calificacion/cantidadCalifacion);
+        }
+        else{
+            System.out.println(0);
+        }
+    }
+
+    public boolean isConComentario(){return conComentario;}
 
     // Getters
     public int getId()  { return id; }
@@ -198,6 +219,11 @@ class Consultor {
                 else{
                     System.out.println(ColoresConsola.RED + "[OCUPADO]" + ColoresConsola.RESET);
                 }
+                if (stand.isConComentario()){
+                    System.out.println(ColoresConsola.YELLOW + "Calificación promedio" + ColoresConsola.RESET);
+                    stand.consultarCalificacion();
+                }
+            System.out.println("-------------------------------------------------------------------\n");
         }
     }
 
@@ -263,6 +289,10 @@ class Consultor {
     public void eliminarEmpresa(int id){
         listEmpresa.remove(getEmpresa(id));
     }
+
+    public void editarVisitante(Visitante visitante, String nombre){
+        visitante.setNombre(nombre);
+    }
 }
 
 class AdministratorMenu {
@@ -315,7 +345,7 @@ class AdministratorMenu {
 
     protected Visitante crearVisitante() {
         System.out.println("Ingresa tu nombre: ");
-        String nombreVisitante = scanner.next();
+        String nombreVisitante = scanner.nextLine();
         System.out.println("Ingresa tu número de identificación: ");
         String idVisitante = scanner.next();
         System.out.println("Ingresa tu correo electrónico");
@@ -401,6 +431,8 @@ class AdministratorMenu {
                     else{
                         System.out.println("No hay una Empresa seleccionada");
                     }
+                default:
+                    System.out.println("Opción no válida. (Sólo número del 1 al 6");
             }
         }while (option!=7);
     }
@@ -420,10 +452,18 @@ class AdministratorMenu {
             System.out.println(ColoresConsola.CYAN + "[2]" + ColoresConsola.RESET + "Seleccionar Visitante para Modificar");
             System.out.println(ColoresConsola.CYAN + "[3]" + ColoresConsola.RESET + "Eliminar un visitante");
             System.out.println(ColoresConsola.CYAN + "[4]" + ColoresConsola.RESET + "Ver Correo del Visitante");
-            System.out.println(ColoresConsola.CYAN + "[5]" + ColoresConsola.RESET + "Deseleccionar visitante");
-            System.out.println(ColoresConsola.CYAN + "[6]" + ColoresConsola.RESET + "Salir del menú de visitante");
+            System.out.println(ColoresConsola.CYAN + "[5]" + ColoresConsola.RESET + "Editar Visitante");
+            System.out.println(ColoresConsola.CYAN + "[6]" + ColoresConsola.RESET + "Deseleccionar visitante");
+            System.out.println(ColoresConsola.CYAN + "[7]" + ColoresConsola.RESET + "Salir del menú de visitante");
 
-            option = scanner.nextInt();
+
+            try{
+                option = scanner.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Ingresa un número solamente.");
+                option = 7;
+            }
+
 
             switch (option){
                 case 1:
@@ -465,11 +505,21 @@ class AdministratorMenu {
                     }
                     break;
                 case 5:
+                    if (seleccionvisitante!=null){
+                        String nombre;
+                        System.out.println("Coloca el nuevo nombre del visitante");
+                        nombre = scanner.nextLine();
+                        consultor.editarVisitante(seleccionvisitante, nombre);
+                        System.out.println(ColoresConsola.GREEN + "Nombre del visitante cambiado con éxito" + ColoresConsola.RESET);
+                    }
+                case 6:
                     System.out.println("Deseleccionando al visitante:" + seleccionvisitante.getNombre());
                     seleccionvisitante = null;
                     break;
+                default:
+                    System.out.println("Ingresa una opción válida. (Número del 1 al 5)");
             }
-        }while (option!=6);
+        }while (option!=7);
     }
 
 
@@ -486,7 +536,13 @@ class AdministratorMenu {
                     "[4] Menú de Visitantes\n" +
                     "[5] Ver Estantes\n" +
                     "[6] Salir del menú de Administrador.\n");
-            option = scanner.nextInt();
+            try{
+                option = scanner.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Ingresa sólo un número válido [1-6]");
+                option = 7;
+            }
+
 
             switch (option) {
                 case 1:
@@ -508,6 +564,8 @@ class AdministratorMenu {
                     break;
                 case 6:
                     break;
+                default:
+                    System.out.println("Ingresa una opción válida. (Sólo número del 1 al 6)");
             }
         }while (option != 6);
     }
@@ -527,12 +585,28 @@ class UserMenu extends AdministratorMenu    {
     }
 
     private void escribirComentario(){
-        System.out.println("Deja un comentario al Stand: ");
+        System.out.println("Deja un comentario al Stand: " + ColoresConsola.PURPLE + standActive.getId() + ColoresConsola.RESET);
         String texto = scanner.nextLine();
         System.out.println("Deja una calificación entre 1 y 5:");
-        int calificacion = scanner.nextInt();
+        int calificacion = 0;
+        do {
+            try{
+                calificacion = scanner.nextInt();
+                if (calificacion < 1 || calificacion > 5){
+                    System.out.println("Coloca una calificación en el rango indicado");
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Coloca un número válido.");
+            }
+        }while (true);
+
+
+
         Comentario comentario = new Comentario(texto, calificacion);
         standActive.addComentario(comentario);
+        System.out.println(ColoresConsola.GREEN + "Agregado comentario al STAND [" + standActive.getId() + "] exitosamente" + ColoresConsola.RESET);
     }
 
 
@@ -548,6 +622,9 @@ class UserMenu extends AdministratorMenu    {
             else{
                 System.out.println(ColoresConsola.RED + " -----[VISITANTE NO LOGEADO]-----" + ColoresConsola.RESET);
             }
+            if (standActive != null){
+                System.out.println(ColoresConsola.PURPLE + "Visitando el STAND [" + standActive.getId() + "]" + ColoresConsola.RESET);
+            }
 
             System.out.println("Bienvenido al menú de usuario. Elige una opción:\n");
             System.out.println("[1] Registrarse");
@@ -555,9 +632,19 @@ class UserMenu extends AdministratorMenu    {
             if (visitante!= null){
                 System.out.println("[3] Visitar Stands");
             }
-            System.out.println("[4] Salir del menú de usuario");
-            option = scanner.nextInt();
-            scanner.nextLine();
+            if (standActive != null){
+                System.out.println("[4] Dejar comentario en el stand activo [" + standActive.getId() + "]");
+            }
+            System.out.println("[5] Salir del menú de usuario");
+
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            }catch (InputMismatchException e){
+                System.out.println("Ingresa sólo un número válido [1-5]");
+                option = 7;
+            }
+
 
             switch (option){
                 case 1:
@@ -593,11 +680,15 @@ class UserMenu extends AdministratorMenu    {
                         int standchoose = scanner.nextInt();
                         standActive = consultor.getStand(standchoose);
                         scanner.nextLine();
+                        System.out.println(ColoresConsola.GREEN + "Visitando el STAND [" + standActive.getId() + "]" + ColoresConsola.RESET);
                     }else{
                         System.out.println("Aún no hay Stands con empresas asignadas para visitar.");
                     }
                     break;
                 case 4:
+                    escribirComentario();
+                    break;
+                case 5:
                     if (visitante !=null){
                         visitante = null;
                     }
@@ -609,7 +700,7 @@ class UserMenu extends AdministratorMenu    {
                 default:
                     System.out.println("Opción no válida");
             }
-        }while (option !=4);
+        }while (option !=5);
     }
 }
 
