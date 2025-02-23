@@ -339,7 +339,7 @@ class AdministratorMenu {
         id_empresas += 1;
 
         consultor.addObject(empresa);
-        System.out.println("Empresa creada con éxito \n");
+        System.out.println(ColoresConsola.GREEN +  "Empresa creada con éxito \n" + ColoresConsola.RESET);
 
     }
 
